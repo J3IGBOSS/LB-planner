@@ -3,6 +3,7 @@
 I created this program to give some structure to the grouping system of our weekly visits because before this, groupings were mostly random, and this made attendance hard to track. 
 The main function of this program is to give suggestions to the user on which group each volunteer should be assigned to, based on the number of times the volunteer has previously visited the elderly in that group. Ultimately, the program merely suggests, and the final grouping decision lies with the user. The hope is that using data, volunteers can be more meaningfully allocated into groups.
 
+## For those coming from the link in the planner user guide:
 I guess if you see this you're interested in coding!
 
 These are the files that I've used to create the app. The main file is app.py and the classes defined are in planner.py and people.py.
