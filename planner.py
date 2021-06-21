@@ -250,15 +250,16 @@ class Planner():
         wb.save(filename)
 
     def end_year(self):
-        newpath = f'./Archive/{str(datetime.today().year)} Year end output'
+        newpath = os.path.join('Archive', str(
+            datetime.today().year) + ' Year end output')
         if not os.path.exists(newpath):
             os.makedirs(newpath)
-            os.makedirs(newpath+'/All profiles')
-        self.output_attendances(
-            f'./Archive/{str(datetime.today().year)} Year end output/' + str(datetime.today().year) + ' attendance.xlsx')
+            os.makedirs(os.path.join(newpath, 'All profiles'))
+        self.output_attendances(os.path.join(newpath, str(
+            datetime.today().year) + ' attendance.xlsx'))
         for v in self.all_volunteers:
             self.output_volunteer_detail(v.get_name(),
-                                         f'./Archive/{str(datetime.today().year)} Year end output/All profiles/{v.get_name()} profile.xlsx')
+                                         os.path.join(newpath, 'All profiles', v.get_name() + ' profile.xlsx'))
             v.attendance.clear()
             v.availability.clear()
             v.pulled_out.clear()

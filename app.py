@@ -9,11 +9,11 @@ from tkcalendar import DateEntry
 
 # Absolutely necessary files to pass down: ./Data(both pkl), ./icon/LB.ico
 
-LB = store.retrieve_pkl('./Data/planner_data.pkl')
-SUNDAY = store.retrieve_pkl('./Data/session_data.pkl')
+LB = store.retrieve_pkl(os.path.join('Data', 'planner_data.pkl'))
+SUNDAY = store.retrieve_pkl(os.path.join('Data', 'session_data.pkl'))
 root = Tk()
 root.title('LB planner')
-root.iconbitmap('./icon/LB.ico')
+root.iconbitmap(os.path.join('icon', 'LB.ico'))
 root.geometry = '2194x1234'
 root.resizable(False, False)
 status_frame = Frame(root, bd=1, bg='white', relief='solid')
@@ -28,12 +28,12 @@ option_frame.pack(fill='both', expand=True)
 
 def save():
     global LB, SUNDAY
-    newpath = './Data'
+    newpath = 'Data'
     if not os.path.exists(newpath):
         messagebox.showerror('LB planner', 'Data file is missing')
         return
-    store.save_pkl(LB, './Data/planner_data.pkl')
-    store.save_pkl(SUNDAY, 'Data/session_data.pkl')
+    store.save_pkl(LB, os.path.join('Data', 'planner_data.pkl'))
+    store.save_pkl(SUNDAY, os.path.join('Data', 'session_data.pkl'))
 
 
 def create_session():
@@ -77,7 +77,7 @@ def create_session():
     def open():
         nonlocal filename
         filename = filedialog.askopenfilename(
-            initialdir='./', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
+            initialdir='.', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
         L3 = Label(top, text=filename, wraplength=250)
         L3.pack(pady=5)
         top.lift()
@@ -196,7 +196,7 @@ def output_avail_summ():
         'LB planner', f'Output a summary of the available dates for all volunteers?')
     if response:
         LB.output_availability_summary(
-            f'Output/{datetime.today().date()} availability summary.xlsx')
+            os.path.join('Output', str(datetime.today().date()) + ' availability summary.xlsx'))
         status.config(text=f'Successfully output availability summary.')
 
 
@@ -251,7 +251,7 @@ def update_from_elderlylist():
 
     def open():
         filename = filedialog.askopenfilename(
-            initialdir='./', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
+            initialdir='.', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
         try:
             LB.update_from_elderlylist(filename)
         except ValueError as e:
@@ -277,9 +277,9 @@ def update_from_volnlist():
 
     def open():
         filename = filedialog.askopenfilename(
-            initialdir='./', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
-        if not os.path.exists('./Archive/Previous volunteers'):
-            os.makedirs('./Archive/Previous volunteers')
+            initialdir='.', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
+        if not os.path.exists(os.path.join('Archive', 'Previous volunteers')):
+            os.makedirs(os.path.join('Archive', 'Previous volunteers'))
         try:
             LB.update_from_volnlist(filename)
         except ValueError as e:
@@ -324,9 +324,10 @@ def output_eldgrp():
             messagebox.showerror('LB planner', 'Invalid group size')
             return
         name = E2.get()
-        if not os.path.exists('./Elderly grouping'):
-            os.makedirs('./Elderly grouping')
-        LB.write_elderly_grouping(n, f'./Elderly grouping/{name}.xlsx')
+        if not os.path.exists('Elderly grouping'):
+            os.makedirs('Elderly grouping')
+        LB.write_elderly_grouping(n, os.path.join(
+            'Elderly grouping', str(name) + '.xlsx'))
         status.config(
             text=f'Successfully output elderly grouping to {name}.xlsx')
         top.destroy()
@@ -361,23 +362,24 @@ def output_volunteer_det():
             messagebox.showerror('LB planner', 'No person selected.')
             return
         if name == 'All':
-            newpath = f'./Output/{datetime.today().date()} All output'
+            newpath = os.path.join('Output', str(
+                datetime.today().date()) + ' All output')
             if not os.path.exists(newpath):
                 os.makedirs(newpath)
             for i in LB.all_volunteers:
                 if j.get() == 1:
                     LB.output_volunteer_detail(
-                        i, f'./Output/{datetime.today().date()} All output/{i.get_name()} profile.xlsx', all=True)
+                        i, os.path.join(newpath, i.get_name() + ' profile.xlsx', all=True))
                 else:
                     LB.output_volunteer_detail(
-                        i, f'./Output/{datetime.today().date()} All output/{i.get_name()} profile.xlsx')
+                        i, os.path.join(newpath, i.get_name() + ' profile.xlsx'))
         else:
             if j.get() == 1:
                 LB.output_volunteer_detail(
-                    name, f'./Output/{datetime.today().date()} {name} profile.xlsx', all=True)
+                    name, os.path.join('Output', str(datetime.today().date()) + ' ' + str(name) + ' profile.xlsx', all=True))
             else:
                 LB.output_volunteer_detail(
-                    name, f'./Output/{datetime.today().date()} {name} profile.xlsx')
+                    name, os.path.join('Output', str(datetime.today().date()) + ' ' + str(name) + ' profile.xlsx'))
         status.config(text=f'Successfully output {name} profile.')
         top.destroy()
     end = Button(top, text='Select', command=end)
@@ -461,7 +463,7 @@ def upd_avail():
 
     def open():
         filename = filedialog.askopenfilename(
-            initialdir='./', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
+            initialdir='.', title='Select file', filetypes=[("Microsoft Excel Worksheet", "*.xlsx")])
         try:
             LB.update_availability(filename)
         except ValueError as e:
@@ -483,8 +485,8 @@ def output_att():
     response = messagebox.askyesno(
         'LB planner', f'Output the attendances of all volunteers?')
     if response:
-        LB.output_attendances(
-            f'Output/{datetime.today().date()} attendances.xlsx')
+        LB.output_attendances(os.path.join('Output', str(
+            datetime.today().date()) + ' attendances.xlsx'))
         status.config(text=f'Successfully output attendances.')
 
 
@@ -545,7 +547,7 @@ if not isinstance(LB, Planner):
         'LB planner', 'Invalid planner data found in Data/planner_data.pkl')
     root.destroy()
 
-paths = ['./Archive/Previous Detailing', './Output']
+paths = [os.path.join('Archive', 'Previous Detailing'), 'Output']
 for i in paths:
     if not os.path.exists(i):
         os.makedirs(i)
