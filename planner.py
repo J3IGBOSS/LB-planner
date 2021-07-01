@@ -23,6 +23,7 @@ class Planner():
         row = 1
         ws['A1'] = 'Hosp'
         ws['C1'] = 'Blk'
+        ws['D1'] = 'Floor'
         ws.column_dimensions['B'].width = 28
         grouping = self.create_elderly_grouping(n)
         grp = 1
@@ -31,7 +32,7 @@ class Planner():
                         str(grp) + ':')
             row += 1
             for e in group:
-                for col in range(1, 4):
+                for col in range(1, 5):
                     if col == 1:
                         _ = ws.cell(row=row, column=col, value=e.hospitability)
                     elif col == 2:
@@ -41,6 +42,8 @@ class Planner():
                         _ = ws.cell(row=row, column=col, value=name)
                     elif col == 3:
                         _ = ws.cell(row=row, column=col, value=e.blk)
+                    elif col == 4:
+                        _ = ws.cell(row=row, column=col, value=e.floor)
                 row += 1
             row += 1
             grp += 1

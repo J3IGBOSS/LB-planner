@@ -369,14 +369,14 @@ def output_volunteer_det():
             for i in LB.all_volunteers:
                 if j.get() == 1:
                     LB.output_volunteer_detail(
-                        i, os.path.join(newpath, i.get_name() + ' profile.xlsx', all=True))
+                        i, os.path.join(newpath, i.get_name() + ' profile.xlsx'), all=True)
                 else:
                     LB.output_volunteer_detail(
                         i, os.path.join(newpath, i.get_name() + ' profile.xlsx'))
         else:
             if j.get() == 1:
                 LB.output_volunteer_detail(
-                    name, os.path.join('Output', str(datetime.today().date()) + ' ' + str(name) + ' profile.xlsx', all=True))
+                    name, os.path.join('Output', str(datetime.today().date()) + ' ' + str(name) + ' profile.xlsx'), all=True)
             else:
                 LB.output_volunteer_detail(
                     name, os.path.join('Output', str(datetime.today().date()) + ' ' + str(name) + ' profile.xlsx'))
